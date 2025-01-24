@@ -37,7 +37,7 @@ def update_board(play, current_game)
     if play_arr[0] == index.to_s 
       value.each_with_index do|v,i| 
         if i.to_s == play_arr[1] 
-          current_game.array[index][i] = current_game.player_turn 
+          current_game.array[index][i] == '_' ? current_game.array[index][i] = current_game.player_turn  : 'Invalid Play'
         end 
       end
     end
