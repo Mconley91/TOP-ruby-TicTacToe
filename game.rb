@@ -37,7 +37,7 @@ def update_board(play, current_game)
     if play_arr[0] == index.to_s 
       value.each_with_index do|v,i| 
         if i.to_s == play_arr[1] 
-          current_game.array[index][i] == '_' ? current_game.array[index][i] = current_game.player_turn  : 'Invalid Play'
+          return current_game.array[index][i] == '_' ? current_game.array[index][i] = current_game.player_turn  : 'invalid'
         end 
       end
     end
@@ -48,17 +48,32 @@ def check_for_winner(current_game)
   game_over = current_game.array.all? {|array| array.all? {|sub_array| sub_array != '_'}}
   if game_over
     puts "Game Over: It's a draw!"
-    game_over
+    true
+  end
+  if winning_plays(current_game)
+    puts "Game Over: Player #{current_game.player_turn} wins the game!"
+    true
+  end
+end
+
+def winning_plays(current_game)
+  top_row = current_game.array[1]
+  mid_row = current_game.array[2]
+  bot_row = current_game.array[3]
+  case current_game.player_turn
+  when top_row[1] && top_row[2] && top_row[3]
+    true
   end
 end
 
 def playing(current_game)
   while !check_for_winner(current_game)
-    puts "It is now round: #{current_game.turn}. Player #{current_game.player_turn}'s turn"
-    play = gets.chomp
-    update_board(play, current_game)
-    current_game.increment_turn
-    current_game.draw_board
+      puts "It is now round: #{current_game.turn}. Player #{current_game.player_turn}'s turn"
+      play = gets.chomp
+      if update_board(play, current_game) != 'invalid'
+        current_game.increment_turn
+      end
+      current_game.draw_board
   end
 end
 
