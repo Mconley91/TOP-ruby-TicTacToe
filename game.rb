@@ -27,9 +27,9 @@ class Game
 end
 
 current_game = Game.new([%w[+ 1 2 3], %w[1 _ _ _], %w[2 _ _ _], %w[3 _ _ _]])
-  puts 'Lets play Tic-Tac-Toe!'
-  puts 'Enter the row number and column number (separated by a comma) you wish to play'
-  current_game.draw_board
+puts 'Lets play Tic-Tac-Toe!'
+puts 'Enter the row number and column number (separated by a comma) you wish to play'
+current_game.draw_board
 
 def update_board(play, current_game)
   play_arr = play.split(',')
@@ -44,15 +44,21 @@ def update_board(play, current_game)
   end
 end
 
+def check_for_winner(current_game)
+  game_over = current_game.array.all? {|array| array.all? {|sub_array| sub_array != '_'}}
+  if game_over
+    puts "Game Over: It's a draw!"
+    game_over
+  end
+end
+
 def playing(current_game)
-  i = 1
-  while i <= 3 # temporary loop for development
+  while !check_for_winner(current_game)
     puts "It is now round: #{current_game.turn}. Player #{current_game.player_turn}'s turn"
     play = gets.chomp
     update_board(play, current_game)
     current_game.increment_turn
     current_game.draw_board
-    i += 1 # increments test round
   end
 end
 
