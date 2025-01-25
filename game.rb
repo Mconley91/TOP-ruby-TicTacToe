@@ -46,7 +46,11 @@ def check_for_tie(current_game)
 end
 
 def check_for_winner(current_game)
-  if current_game.array[1][1] == current_game.player_turn && current_game.array[1][2] == current_game.player_turn && current_game.array[1][3] == current_game.player_turn
+  player = current_game.player_turn
+  top_row = current_game.array[1]
+  mid_row = current_game.array[2]
+  bot_row = current_game.array[3]
+  if top_row[1] == player && top_row[2] == player && top_row[3] == player
     true
   else
     false
