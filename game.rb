@@ -50,11 +50,17 @@ def check_for_winner(current_game)
   top_row = current_game.array[1]
   mid_row = current_game.array[2]
   bot_row = current_game.array[3]
-  if top_row[1] == player && top_row[2] == player && top_row[3] == player
-    true
-  else
-    false
-  end
+  #horizontal wins
+  [top_row[1], top_row[2], top_row[3]].all? {|fields| fields == player} ? true :
+  [mid_row[1], mid_row[2], mid_row[3]].all? {|fields| fields == player} ? true :
+  [bot_row[1], bot_row[2], bot_row[3]].all? {|fields| fields == player} ? true :
+  #vertical wins
+  [top_row[1], mid_row[1], bot_row[1]].all? {|fields| fields == player} ? true :
+  [top_row[2], mid_row[2], bot_row[2]].all? {|fields| fields == player} ? true :
+  [top_row[3], mid_row[3], bot_row[3]].all? {|fields| fields == player} ? true :
+  #diagnal wins
+  [top_row[1], mid_row[2], bot_row[3]].all? {|fields| fields == player} ? true :
+  [top_row[3], mid_row[2], bot_row[1]].all? {|fields| fields == player} ? true : false
 end
 
 current_game = Game.new([%w[+ 1 2 3], %w[1 _ _ _], %w[2 _ _ _], %w[3 _ _ _]])
