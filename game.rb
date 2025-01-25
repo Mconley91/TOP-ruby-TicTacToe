@@ -26,55 +26,58 @@ class Game
   end
 end
 
-current_game = Game.new([%w[+ 1 2 3], %w[1 _ _ _], %w[2 _ _ _], %w[3 _ _ _]])
-puts 'Lets play Tic-Tac-Toe!'
-puts 'Enter the row number and column number (separated by a comma) you wish to play'
-current_game.draw_board
-
 def update_board(play, current_game)
   play_arr = play.split(',')
   current_game.array.each_with_index do|value,index| 
     if play_arr[0] == index.to_s 
       value.each_with_index do|v,i| 
         if i.to_s == play_arr[1] 
-          return current_game.array[index][i] == '_' ? current_game.array[index][i] = current_game.player_turn  : 'invalid'
+          return current_game.array[index][i] == '_' ? current_game.array[index][i] = current_game.player_turn  : 'invalid play'
         end 
       end
     end
   end
 end
 
-def check_for_winner(current_game)
-  game_over = current_game.array.all? {|array| array.all? {|sub_array| sub_array != '_'}}
-  if game_over
-    puts "Game Over: It's a draw!"
-    true
-  end
-  if winning_plays(current_game)
-    puts "Game Over: Player #{current_game.player_turn} wins the game!"
+def check_for_tie(current_game)
+  if current_game.array.all? {|array| array.all? {|sub_array| sub_array != '_'}}
     true
   end
 end
 
-def winning_plays(current_game)
-  top_row = current_game.array[1]
-  mid_row = current_game.array[2]
-  bot_row = current_game.array[3]
-  case current_game.player_turn
-  when top_row[1] && top_row[2] && top_row[3]
+def check_for_winner(current_game)
+  if current_game.array[1][1] == current_game.player_turn && current_game.array[1][2] == current_game.player_turn && current_game.array[1][3] == current_game.player_turn
     true
+  else
+    false
   end
 end
+
+current_game = Game.new([%w[+ 1 2 3], %w[1 _ _ _], %w[2 _ _ _], %w[3 _ _ _]])
+puts 'Lets play Tic-Tac-Toe!'
+puts 'Enter the row number and column number (separated by a comma) you wish to play'
+current_game.draw_board
 
 def playing(current_game)
-  while !check_for_winner(current_game)
-      puts "It is now round: #{current_game.turn}. Player #{current_game.player_turn}'s turn"
-      play = gets.chomp
-      if update_board(play, current_game) != 'invalid'
+
+  while true
+    puts "It is now round: #{current_game.turn}. Player #{current_game.player_turn}'s turn"
+    play = gets.chomp
+    if update_board(play, current_game) != 'invalid play'
+      current_game.draw_board
+      if check_for_winner(current_game)
+        puts "Game Over: Player #{current_game.player_turn} wins the game!"
+        break
+      end
+      if check_for_tie(current_game)
+        puts "Game Over: It's a tie!"
+        break
+      else
         current_game.increment_turn
       end
-      current_game.draw_board
+    end
   end
+  
 end
 
 playing(current_game)
