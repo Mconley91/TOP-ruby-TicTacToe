@@ -68,18 +68,18 @@ def check_for_winner(current_game)
   if [top_row[1], top_row[2], top_row[3]].all? { |fields| fields == player }
     true
   elsif [mid_row[1], mid_row[2], mid_row[3]].all? { |fields| fields == player }
-    # vertical wins
     true
   elsif [bot_row[1], bot_row[2], bot_row[3]].all? { |fields| fields == player }
     true
+  # vertical wins
   elsif [top_row[1], mid_row[1], bot_row[1]].all? { |fields| fields == player }
     true
   elsif [top_row[2], mid_row[2], bot_row[2]].all? { |fields| fields == player }
     true
   elsif [top_row[3], mid_row[3], bot_row[3]].all? { |fields| fields == player }
     true
-  elsif [top_row[1], mid_row[2], bot_row[3]].all? { |fields| fields == player }
     # diagnal wins
+  elsif [top_row[1], mid_row[2], bot_row[3]].all? { |fields| fields == player }
     true
   else
     [top_row[3], mid_row[2], bot_row[1]].all? { |fields| fields == player } ? true : false
