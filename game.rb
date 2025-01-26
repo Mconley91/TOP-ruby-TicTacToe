@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-# board should be an object, each row should be an object of 3 values
-# each value should start blank but either be made X or O by user input
-# a method or object state should track the turn number and which player's turn it currently is
-
 class Game
   attr_accessor(:array, :turn, :player_turn)
 
@@ -26,13 +22,31 @@ class Game
   end
 end
 
+def input_validator(play_arr)
+  valid_plays = %w[1 2 3]
+  if valid_plays.include?(play_arr[0]) && valid_plays.include?(play_arr[1])
+    true
+  else
+    false
+  end
+end
+
 def update_board(play, current_game)
   play_arr = play.split(',')
+  if !input_validator(play_arr)
+    puts "Invalid Entry: Incorrect Input Format"
+    return false
+  end
   current_game.array.each_with_index do|value,index| 
     if play_arr[0] == index.to_s 
       value.each_with_index do|v,i| 
         if i.to_s == play_arr[1] 
-          return current_game.array[index][i] == '_' ? current_game.array[index][i] = current_game.player_turn  : 'invalid play'
+          if current_game.array[index][i] == '_'
+            current_game.array[index][i] = current_game.player_turn
+          else
+            puts 'Invalid Entry: Play has already been made'
+            return false
+          end
         end 
       end
     end
@@ -69,11 +83,10 @@ puts 'Enter the row number and column number (separated by a comma) you wish to 
 current_game.draw_board
 
 def playing(current_game)
-
+  puts "It is round: #{current_game.turn}. Player #{current_game.player_turn}'s turn"
   while true
-    puts "It is now round: #{current_game.turn}. Player #{current_game.player_turn}'s turn"
     play = gets.chomp
-    if update_board(play, current_game) != 'invalid play'
+    if update_board(play, current_game)
       current_game.draw_board
       if check_for_winner(current_game)
         puts "Game Over: Player #{current_game.player_turn} wins the game!"
@@ -84,10 +97,10 @@ def playing(current_game)
         break
       else
         current_game.increment_turn
+        puts "It is round: #{current_game.turn}. Player #{current_game.player_turn}'s turn"
       end
     end
   end
-  
 end
 
 playing(current_game)
